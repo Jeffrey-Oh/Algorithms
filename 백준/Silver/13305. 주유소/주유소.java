@@ -10,7 +10,7 @@ public class Main {
 
         int N = Integer.parseInt(br.readLine());
         List<Integer> bridges = new ArrayList<>();
-        List<Integer> stations = new ArrayList<>();
+        List<Integer> oils = new ArrayList<>();
 
         StringTokenizer stringTokenizer = new StringTokenizer(br.readLine(), " ");
         while(stringTokenizer.hasMoreTokens()) {
@@ -19,22 +19,17 @@ public class Main {
 
         stringTokenizer = new StringTokenizer(br.readLine(), " ");
         while(stringTokenizer.hasMoreTokens()) {
-            stations.add(Integer.parseInt(stringTokenizer.nextToken()));
+            oils.add(Integer.parseInt(stringTokenizer.nextToken()));
         }
 
-        int result = 0;
+        int oil = oils.get(0);
+        long result = (long) oil * bridges.get(0);
 
-        for (int i=0; i<N; i++) {
-            Integer station = stations.get(i);
-            if (i + 1 < N && station > stations.get(i + 1)) {
-                result += station * bridges.get(i);
-            } else {
-                while(true) {
-                    if (i + 1 < N && station <= stations.get(i)) {
-                        result += station * bridges.get(i++);
-                    } else break;
-                }
-            }
+        for (int i=1; i<N-1; i++) {
+            if (oils.get(i) < oil)
+                oil = oils.get(i);
+
+            result += (long) oil * bridges.get(i);
         }
 
         bw.write(result + "\n");
