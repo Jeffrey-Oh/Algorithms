@@ -18,7 +18,6 @@ public class Main {
             } else if (B % 10 == 1) {
                 B /= 10;
             } else {
-                result = -1;
                 break;
             }
             result++;
