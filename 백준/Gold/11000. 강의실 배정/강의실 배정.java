@@ -37,8 +37,6 @@ public class Main {
                     sum++;
                     pq.offer(prevEnd);
                 }
-            } else {
-                sum++;
             }
             pq.offer(meetings[i][1]);
         }
