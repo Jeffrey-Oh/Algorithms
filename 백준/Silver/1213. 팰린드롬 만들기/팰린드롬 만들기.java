@@ -21,7 +21,7 @@ public class Main {
 
         // 펠린드롬의 기준
         // 모든 알파벳의 개수가 짝수
-        // 모든 알파벳의 개수가 짝수인데 1개만 홀수 -> 홀수를 제일 중앙에 배치
+        // 모든 알파벳의 개수가 짝수인데 1개만 홀수
         Map<Character, Integer> alphaMap = new TreeMap<>();
         for (char alpha : value.toCharArray()) {
             alphaMap.put(alpha, alphaMap.getOrDefault(alpha, 0) + 1);
