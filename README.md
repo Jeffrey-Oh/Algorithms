@@ -1,1 +1,1 @@
-# solved.ac
+# Algorithm
