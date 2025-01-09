@@ -2,13 +2,13 @@ import java.util.*;
 
 class Solution {
     public int solution(String[] strArr) {
-        Map<Integer, Integer> map = new HashMap<>();
-        for (String str : strArr) {
-            map.put(str.length(), map.getOrDefault(str.length(), 0) + 1);
-        }
+        int[] size = new int[31];
         int max = 0;
-        for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
-            max = Math.max(max, entry.getValue());
+        for (int i=0; i<strArr.length; i++) {
+            size[strArr[i].length()]++;
+        }
+        for (int i=0; i<size.length; i++) {
+            max = Math.max(max, size[i]);
         }
         return max;
     }
