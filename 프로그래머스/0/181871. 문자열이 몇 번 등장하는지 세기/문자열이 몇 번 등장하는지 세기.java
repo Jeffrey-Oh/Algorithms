@@ -3,13 +3,10 @@ import java.util.regex.*;
 class Solution {
     public int solution(String myString, String pat) {
         int answer = 0;
-        int idx = 0;
-        
-        while ((idx = myString.indexOf(pat, idx)) != -1) {
-            answer++;
-            idx++;
+        for (int i=0; i<myString.length(); i++) {
+            if (myString.substring(i).startsWith(pat))
+                answer++;
         }
-        
         return answer;
     }
 }
