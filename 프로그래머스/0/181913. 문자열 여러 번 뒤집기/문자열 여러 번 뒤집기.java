@@ -1,14 +1,27 @@
 class Solution {
     public String solution(String my_string, int[][] queries) {
-        for (int i=0; i<queries.length; i++) {
-            StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new StringBuilder(my_string); // 전체 문자열을 StringBuilder로 변환
+        
+        for (int i = 0; i < queries.length; i++) {
             int s = queries[i][0];
             int e = queries[i][1];
-            sb.append(my_string.substring(0, s));
-            sb.append(new StringBuilder(my_string.substring(s, e+1)).reverse());
-            sb.append(my_string.substring(e+1));
-            my_string = sb.toString();
+            
+            // s와 e 사이를 뒤집음
+            reverseSubstring(sb, s, e);
         }
-        return my_string;
+        
+        return sb.toString();
+    }
+    
+    // StringBuilder에서 특정 범위를 뒤집는 메소드
+    private void reverseSubstring(StringBuilder sb, int start, int end) {
+        while (start < end) {
+            // start와 end 위치의 문자 교환
+            char temp = sb.charAt(start);
+            sb.setCharAt(start, sb.charAt(end));
+            sb.setCharAt(end, temp);
+            start++;
+            end--;
+        }
     }
 }
