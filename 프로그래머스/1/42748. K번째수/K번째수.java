@@ -7,15 +7,15 @@ class Solution {
             int[] command = commands[i];
             int[] temp = new int[command[1] - command[0] + 1];
             System.arraycopy(array, command[0] - 1, temp, 0, temp.length);
-            Arrays.sort(temp);
-            // sort(temp);
+            // Arrays.sort(temp);
+            sort(temp);
             res[i] = temp[command[2] - 1];
         }
         return res;
     }
     
     public void sort(int[] arr) {
-        for (int i=0; i<arr.length; i++) {
+        for (int i=0; i<arr.length - 1; i++) {
             boolean swap = false;
             for (int j=0; j<arr.length - i - 1; j++) {
                 if (arr[j] > arr[j+1]) {
