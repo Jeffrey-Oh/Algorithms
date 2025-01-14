@@ -7,7 +7,8 @@ class Solution {
             int[] command = commands[i];
             int[] temp = new int[command[1] - command[0] + 1];
             System.arraycopy(array, command[0] - 1, temp, 0, temp.length);
-            sort(temp);
+            Arrays.sort(temp);
+            // sort(temp);
             res[i] = temp[command[2] - 1];
         }
         return res;
