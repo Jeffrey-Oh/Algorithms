@@ -9,8 +9,6 @@ class Solution {
             generateCombinations("", numbers, length, uniqueNumbers);
         }
         
-        System.out.println(uniqueNumbers);
-        
         // 소수 개수 세기
         int primeCount = 0;
         for (int number : uniqueNumbers) {
