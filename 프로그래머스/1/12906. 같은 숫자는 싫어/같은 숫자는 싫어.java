@@ -4,9 +4,7 @@ public class Solution {
     public int[] solution(int[] arr) {
         ArrayDeque<Integer> ad = new ArrayDeque<>();
         for (int num : arr) {
-            if (ad.isEmpty())
-                ad.add(num);
-            else if (ad.peekLast() != num) {
+            if (ad.isEmpty() || ad.peekLast() != num) {
                 ad.add(num);
             }
         }
