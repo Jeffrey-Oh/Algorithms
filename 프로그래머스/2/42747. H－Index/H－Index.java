@@ -3,14 +3,11 @@ import java.util.*;
 class Solution {
     public int solution(int[] citations) {
         Arrays.sort(citations);
-        int n = citations.length;
-
-        for (int h = n; h > 0; h--) {
-            if (citations[n - h] >= h) {
-                return h;
-            }
+        int size = citations.length;
+        for (int i=size; 0<i; i--) {
+            if (citations[size - i] >= i)
+                return i;
         }
-
         return 0;
     }
 }
