@@ -12,7 +12,7 @@ class Solution {
             graph.get(e[1]).add(e[0]);
         }
 
-        // 다익스트라 알고리즘으로 최단 거리 계산
+        // BFS로 최단 거리 계산
         int[] distances = bfs(graph, n, 1);
 
         // 최대 거리 찾기 및 해당 거리 노드 개수 세기
@@ -27,16 +27,16 @@ class Solution {
         Arrays.fill(distances, -1); // 방문하지 않은 노드는 -1로 초기화
         distances[start] = 0;
 
-        Queue<Integer> queue = new LinkedList<>();
-        queue.add(start);
+        ArrayDeque<Integer> deque = new ArrayDeque<>();
+        deque.add(start);
 
-        while (!queue.isEmpty()) {
-            int currentNode = queue.poll();
+        while (!deque.isEmpty()) {
+            int currentNode = deque.poll();
 
             for (int neighbor : graph.get(currentNode)) {
                 if (distances[neighbor] == -1) { // 방문하지 않은 노드만 처리
                     distances[neighbor] = distances[currentNode] + 1;
-                    queue.add(neighbor);
+                    deque.add(neighbor);
                 }
             }
         }
