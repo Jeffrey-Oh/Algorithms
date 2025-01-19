@@ -2,50 +2,41 @@ import java.util.*;
 
 class Solution {
     public int solution(int n, int[] lost, int[] reserve) {
-        boolean[] answer = new boolean[n + 1];
-        Arrays.fill(answer, true);
-        
-        Arrays.sort(lost);
-        Arrays.sort(reserve);
-        
-        ArrayDeque<Integer> reserves = new ArrayDeque<>();
-        for (int res : reserve) reserves.add(res);
-        
-        ArrayDeque<Integer> losts = new ArrayDeque<>();
+        // 학생들의 체육복 상태를 저장할 배열
+        int[] clothes = new int[n + 1];
+        Arrays.fill(clothes, 1); // 기본적으로 모두 체육복 1개씩 보유
+
+        // 잃어버린 학생 반영
         for (int lo : lost) {
-            losts.add(lo);
-            answer[lo] = false;
+            clothes[lo]--;
         }
-        
-        while (!reserves.isEmpty()) {
-            int res = reserves.pop();
-            if (losts.contains(res))
-                answer[res] = true;
-            else {
-                if (losts.contains(res - 1)) {
-                    answer[res] = true;
-                    answer[res - 1] = true;
-                    losts.remove(res - 1);
-                    
-                    if (reserves.contains(res - 1))
-                        reserves.remove(res - 1);
+
+        // 여분 체육복을 가진 학생 반영
+        for (int res : reserve) {
+            clothes[res]++;
+        }
+
+        // 체육복 빌려주기 처리
+        for (int i = 1; i <= n; i++) {
+            if (clothes[i] == 0) { // 체육복이 없는 학생
+                if (i > 1 && clothes[i - 1] == 2) { // 왼쪽 학생에게서 빌리기
+                    clothes[i]++;
+                    clothes[i - 1]--;
+                } else if (i < n && clothes[i + 1] == 2) { // 오른쪽 학생에게서 빌리기
+                    clothes[i]++;
+                    clothes[i + 1]--;
                 }
-                else if (losts.contains(res + 1)) {
-                    answer[res] = true;
-                    answer[res + 1] = true;
-                    losts.remove(res + 1);
-                    
-                    if (reserves.contains(res + 1))
-                        reserves.remove(res + 1);
-                }
-                else answer[res] = true;
             }
         }
-        
-        int count = -1;
-        for (boolean b : answer) {
-            if (b) count++;
+
+        // 체육복을 가진 학생 수 계산
+        int count = 0;
+        for (int i = 1; i <= n; i++) {
+            if (clothes[i] > 0) {
+                count++;
+            }
         }
+
         return count;
     }
 }
