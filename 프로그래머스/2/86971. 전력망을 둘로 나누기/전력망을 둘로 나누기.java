@@ -4,12 +4,8 @@ class Solution {
     public int solution(int n, int[][] wires) {
         Map<Integer, LinkedHashSet<Integer>> graph = new HashMap<>();
         for (int[] wire : wires) {
-            graph.put(wire[0], new LinkedHashSet<>());
-            graph.put(wire[1], new LinkedHashSet<>());
-        }
-        for (int[] wire : wires) {
-            graph.get(wire[0]).add(wire[1]);
-            graph.get(wire[1]).add(wire[0]);
+            graph.computeIfAbsent(wire[0], g -> new LinkedHashSet<>()).add(wire[1]);
+            graph.computeIfAbsent(wire[1], g -> new LinkedHashSet<>()).add(wire[0]);
         }
         
         int min = Integer.MAX_VALUE;
@@ -36,9 +32,7 @@ class Solution {
         
         for (int num : graph.get(start)) {
             if (!visited[num]) {
-                visited[num] = true;
                 sum += dfs(graph, num, visited);
-                visited[num] = false;
             }
         }
         
