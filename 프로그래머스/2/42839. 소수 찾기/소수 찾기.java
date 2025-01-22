@@ -2,28 +2,22 @@ import java.util.*;
 
 class Solution {
     public int solution(String numbers) {
-        List<String> list = new ArrayList<>();
-        for (int i=1; i<=numbers.length(); i++) {
-            generate("", numbers, i, list);
-        }
-        Set<Integer> answer = new HashSet<>();
-        for (String number : list) {
-            int num = Integer.parseInt(number);
-            if (isPrime(num)) answer.add(num);
-        }
-        return answer.size();
+        Set<Integer> results = new HashSet<>();
+        for (int i=1; i<=numbers.length(); i++)
+            generate("", numbers, i, results);
+        return results.size();
     }
     
-    public void generate(String prefix, String remaining, int length, List<String> results) {
-        if (prefix.length() == length) {
-            results.add(prefix);
+    public void generate(String prefix, String input, int length, Set<Integer> results) {
+        if (prefix.length() == length && isPrime(Integer.parseInt(prefix))) {
+            results.add(Integer.parseInt(prefix));
             return;
         }
         
-        for (int i=0; i<remaining.length(); i++) {
+        for (int i=0; i<input.length(); i++) {
             generate(
-                prefix + remaining.charAt(i),
-                remaining.substring(0, i) + remaining.substring(i+1),
+                prefix + input.charAt(i),
+                input.substring(0, i) + input.substring(i + 1),
                 length,
                 results
             );
@@ -32,9 +26,8 @@ class Solution {
     
     public boolean isPrime(int num) {
         if (num <= 1) return false;
-        for (int i=2; i<=Math.sqrt(num); i++) {
+        for (int i=2; i<=Math.sqrt(num); i++)
             if (num % i == 0) return false;
-        }
         return true;
     }
 }
