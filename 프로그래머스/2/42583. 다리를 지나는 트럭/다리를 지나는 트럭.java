@@ -2,53 +2,52 @@ import java.util.*;
 
 class Solution {
     public int solution(int bridge_length, int weight, int[] truck_weights) {
-        ArrayDeque<Truck> trucks = new ArrayDeque<>();
+        ArrayDeque<Truck> waits = new ArrayDeque<>();
         ArrayDeque<Truck> onBridge = new ArrayDeque<>();
-        int answer = 0;
         
-        for (int truckWeight : truck_weights) {
-            trucks.add(new Truck(truckWeight));
-        }
+        for (int truck_weight : truck_weights)
+            waits.add(new Truck(truck_weight));
         
-        while (!trucks.isEmpty() || !onBridge.isEmpty()) {
-            answer++;
+        int sec = 0;
+        
+        while (!waits.isEmpty() || !onBridge.isEmpty()) {
+            sec++;
             
-            Truck doneTruck = null;
+            Truck done = null;
             int sum = 0;
             
-            for (Truck truck : onBridge) {
-                sum += truck.weight;
-                truck.move();
+            for (Truck onTruck : onBridge) {
+                sum += onTruck.getWeight();
+                onTruck.move();
                 
-                if (truck.getPosition() > bridge_length) {
-                    doneTruck = truck;
+                if (onTruck.getPosition() > bridge_length) {
+                    done = onTruck;
                 }
             }
             
-            if (doneTruck != null) {
-                onBridge.remove(doneTruck);
-                sum -= doneTruck.getWeight();
+            if (done != null) {
+                onBridge.remove(done);
+                sum -= done.getWeight();
             }
             
-            if (!trucks.isEmpty() && onBridge.size() < bridge_length) {
-                Truck truck = trucks.peek();
-                
+            if (!waits.isEmpty() && onBridge.size() < bridge_length) {
+                Truck truck = waits.peek();
                 if (truck.getWeight() + sum <= weight) {
-                    trucks.remove(truck);
                     onBridge.add(truck);
+                    waits.remove(truck);
                     truck.move();
                 }
             }
         }
         
-        return answer;
+        return sec;
     }
     
     class Truck {
         private int weight;
         private int position;
         
-        Truck(int weight) {
+        Truck (int weight) {
             this.weight = weight;
             this.position = 0;
         }
@@ -63,10 +62,6 @@ class Solution {
         
         public void move() {
             this.position++;
-        }
-        
-        public String toString() {
-            return "weight = " + this.weight + ", position = " + this.position;
         }
     }
 }
