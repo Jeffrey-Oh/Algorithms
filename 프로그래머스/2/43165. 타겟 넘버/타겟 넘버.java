@@ -1,14 +1,14 @@
 class Solution {
-    int answer;
+    int max;
+    
     public int solution(int[] numbers, int target) {
         dfs(numbers, target, 0, 0);
-        return answer;
+        return max;
     }
     
     public void dfs(int[] numbers, int target, int index, int sum) {
-        if (index == numbers.length) {
-            if (target == sum)
-                answer++;
+        if (numbers.length == index) {
+            if (sum == target) max++;
             return;
         }
         
