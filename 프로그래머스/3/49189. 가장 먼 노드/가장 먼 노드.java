@@ -8,13 +8,13 @@ class Solution {
             graph.computeIfAbsent(e[1], g -> new ArrayList<>()).add(e[0]);
         }
         
-        int[] distances = dfs(graph, n, 1);
+        int[] distances = bfs(graph, n, 1);
         
         int max = Arrays.stream(distances).max().orElse(0);
         return (int) Arrays.stream(distances).filter(i -> i == max).count();
     }
     
-    public int[] dfs(Map<Integer, List<Integer>> graph, int n, int start) {
+    public int[] bfs(Map<Integer, List<Integer>> graph, int n, int start) {
         int[] distances = new int[n + 1];
         Arrays.fill(distances, -1);
         distances[start] = 0;
