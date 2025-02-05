@@ -6,7 +6,7 @@ class Solution {
         int m = maps[0].length;
         
         int[] dx = {0, 0, -1, 1};
-        int[] dy = {-1, 1, 0, 0};
+        int[] dy = {1, -1, 0, 0};
         
         Deque<int[]> q = new ArrayDeque<>();
         q.add(new int[]{0, 0});
@@ -25,7 +25,7 @@ class Solution {
                 int nx = x + dx[i];
                 int ny = y + dy[i];
                 
-                if (nx >= 0 && nx < n && ny >= 0 && ny < m && maps[nx][ny] == 1) {
+                if (nx >= 0 && ny >= 0 && nx < n && ny < m && maps[nx][ny] == 1) {
                     maps[nx][ny] = maps[x][y] + 1;
                     q.add(new int[]{nx, ny});
                 }
