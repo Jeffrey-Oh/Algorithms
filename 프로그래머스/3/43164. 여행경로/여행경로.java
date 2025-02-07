@@ -2,29 +2,28 @@ import java.util.*;
 
 class Solution {
     public String[] solution(String[][] tickets) {
-        Map<String, PriorityQueue<String>> graph = new HashMap<>();
+        Map<String, PriorityQueue<String>> airports = new HashMap<>();
         for (String[] ticket : tickets) {
-            graph.computeIfAbsent(ticket[0], g -> new PriorityQueue<>()).add(ticket[1]);
+            airports.computeIfAbsent(ticket[0], a -> new PriorityQueue<>()).add(ticket[1]);
         }
         
-        String current = "ICN";
-        List<String> list = new ArrayList<>();
+        List<String> result = new ArrayList<>();
         
-        dfs(graph, current, list);
+        dfs("ICN", airports, result);
         
-        Collections.reverse(list);
+        Collections.reverse(result);
         
-        return list.toArray(new String[0]);
+        return result.stream().toArray(String[]::new);
     }
     
-    public void dfs(Map<String, PriorityQueue<String>> graph, String current, List<String> list) {
-        PriorityQueue<String> pq = graph.get(current);
+    public void dfs(String current, Map<String, PriorityQueue<String>> airports, List<String> result) {
+        PriorityQueue<String> airport = airports.get(current);
         
-        while (pq != null && !pq.isEmpty()) {
-            String next = pq.poll();
-            dfs(graph, next, list);
+        while (airport != null && !airport.isEmpty()) {
+            String next = airport.poll();
+            dfs(next, airports, result);
         }
         
-        list.add(current);
+        result.add(current);
     }
 }
