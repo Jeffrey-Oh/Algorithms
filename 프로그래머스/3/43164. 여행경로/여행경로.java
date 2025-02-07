@@ -13,7 +13,7 @@ class Solution {
         
         Collections.reverse(result);
         
-        return result.stream().toArray(String[]::new);
+        return result.toArray(new String[0]);
     }
     
     public void dfs(String current, Map<String, PriorityQueue<String>> airports, List<String> result) {
