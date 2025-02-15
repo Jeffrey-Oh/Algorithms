@@ -1,94 +1,60 @@
+import java.time.Duration;
+import java.time.LocalTime;
 import java.util.*;
-import java.time.*;
-import java.util.stream.*;
 
 class Solution {
     public int[] solution(int[] fees, String[] records) {
-        final String STATUS_IN = "IN";
         int defaultTime = fees[0], defaultFee = fees[1];
         int perTime = fees[2], perCost = fees[3];
-        
-        Map<String, String> parks = new HashMap<>();
-        Map<String, Integer> cars = new HashMap<>();
-        
-        for (String record : records) {
-            String[] infos = record.split(" ");
-            String time = infos[0];
-            String carNum = infos[1];
-            String status = infos[2];
-            
-            if (status.equals(STATUS_IN)) {
-                parks.put(carNum, time);
-            } else {
-                String inTime = parks.get(carNum);
-                parks.remove(carNum);
-                
-                int diff = calcTime(inTime, time);
-                
-                int totalTime = cars.getOrDefault(carNum, 0);
-                cars.put(carNum, totalTime + diff);
-            }
-        }
-        
-        // 남은 차량 처리
-        for (Map.Entry<String, String> car : parks.entrySet()) {
-            int diff = calcTime(car.getValue(), null);
-            
-            String carNum = car.getKey();
-            int totalTime = cars.getOrDefault(carNum, 0);
-            cars.put(carNum, totalTime + diff);
-        }
-        
-        // 비용 처리
-        List<Car> list = new ArrayList<>();
-        for (Map.Entry<String, Integer> car : cars.entrySet()) {
-            String carNum = car.getKey();
-            int totalTime = car.getValue();
-            int totalFee = defaultFee;
-            
-            if (totalTime > defaultTime) {
-                int over = totalTime - defaultTime;
-                int mod = over / perTime;
-                int remain = over % perTime;
-                
-                if (remain > 0) {
-                    mod++;
-                }
-                
-                totalFee += mod * perCost;
-            }
-            
-            list.add(new Car(carNum, totalFee));
-        }
-        
-        list.sort((c1, c2) -> Integer.parseInt(c1.getCarNum()) - Integer.parseInt(c2.getCarNum()));
-        
-        return list.stream().mapToInt(car -> car.getFee()).toArray();
-    }
-    
-    public int calcTime(String inTime, String time) {
-        LocalTime t1 = LocalTime.parse(inTime);
-        if (time == null) time = "23:59";
-        LocalTime t2 = LocalTime.parse(time);
 
-        return (int) Duration.between(t1, t2).toMinutes();
+        // 입차 기록
+        Map<Integer, Integer> inTimes = new HashMap<>();
+        // 누적 주차 시간 (자동차 번호 -> 총 주차 시간)
+        Map<Integer, Integer> totalTimes = new HashMap<>();
+
+        // 기록 처리
+        for (String record : records) {
+            String[] parts = record.split(" ");
+            int time = parseTime(parts[0]);
+            int carNum = Integer.parseInt(parts[1]);
+            String status = parts[2];
+
+            if (status.equals("IN")) {
+                inTimes.put(carNum, time);
+            } else {
+                int inTime = inTimes.remove(carNum);
+                totalTimes.put(carNum, totalTimes.getOrDefault(carNum, 0) + (time - inTime));
+            }
+        }
+
+        // 남아있는 차량(출차되지 않은 경우) 처리
+        for (Map.Entry<Integer, Integer> entry : inTimes.entrySet()) {
+            int carNum = entry.getKey();
+            int inTime = entry.getValue();
+            totalTimes.put(carNum, totalTimes.getOrDefault(carNum, 0) + (parseTime("23:59") - inTime));
+        }
+
+        // 자동차 번호를 정렬하여 리스트로 변환
+        List<Integer> sortedCarNums = new ArrayList<>(totalTimes.keySet());
+        Collections.sort(sortedCarNums);
+
+        // 요금 계산
+        int[] answer = new int[sortedCarNums.size()];
+        int idx = 0;
+        for (int carNum : sortedCarNums) {
+            int time = totalTimes.get(carNum);
+            int fee = defaultFee;
+            if (time > defaultTime) {
+                fee += Math.ceil((time - defaultTime) / (double) perTime) * perCost;
+            }
+            answer[idx++] = fee;
+        }
+
+        return answer;
     }
-    
-    class Car {
-        private String carNum;
-        private int fee;
-        
-        Car(String carNum, int fee) {
-            this.carNum = carNum;
-            this.fee = fee;
-        }
-        
-        public String getCarNum() {
-            return this.carNum;
-        }
-        
-        public int getFee() {
-            return this.fee;
-        }
+
+    // "HH:mm" → 분 단위 정수 변환
+    private int parseTime(String time) {
+        return Integer.parseInt(time.substring(0, 2)) * 60 + Integer.parseInt(time.substring(3, 5));
     }
 }
