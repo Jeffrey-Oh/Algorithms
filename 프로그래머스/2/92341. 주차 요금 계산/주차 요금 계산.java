@@ -25,12 +25,8 @@ class Solution {
                 
                 int diff = calcTime(inTime, time);
                 
-                if (cars.containsKey(carNum)) {
-                    int totalTime = cars.get(carNum);
-                    cars.put(carNum, totalTime + diff);
-                } else {
-                    cars.put(carNum, diff);
-                }
+                int totalTime = cars.getOrDefault(carNum, 0);
+                cars.put(carNum, totalTime + diff);
             }
         }
         
@@ -39,12 +35,8 @@ class Solution {
             int diff = calcTime(car.getValue(), null);
             
             String carNum = car.getKey();
-            if (cars.containsKey(carNum)) {
-                int totalTime = cars.get(carNum);
-                cars.put(carNum, totalTime + diff);
-            } else {
-                cars.put(carNum, diff);
-            }
+            int totalTime = cars.getOrDefault(carNum, 0);
+            cars.put(carNum, totalTime + diff);
         }
         
         // 비용 처리
