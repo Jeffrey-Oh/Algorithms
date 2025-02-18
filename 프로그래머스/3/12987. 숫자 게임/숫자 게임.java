@@ -8,7 +8,7 @@ class Solution {
         int answer = 0;
         int n = A.length;
         int i = 0, j = 0;
-        while (j < n) {
+        while (i < n && j < n) {
             if (B[j] > A[i]) {
                 answer++;
                 i++;
